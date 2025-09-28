@@ -302,7 +302,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Homepage -->
         <div id="homepage" class="page">
             <div class="header">
                 <h1>🇩🇪 Němčina - Procvičování</h1>
@@ -418,7 +417,6 @@
             </div>
         </div>
 
-        <!-- Practice Page -->
         <div id="practicePage" class="page hidden">
             <div class="header">
                 <h1>🎯 Procvičování</h1>
@@ -429,7 +427,6 @@
 
             <div class="card">
                 <div id="questionContainer" class="question-container">
-                    <!-- Questions will be inserted here dynamically -->
                 </div>
 
                 <div style="text-align: center;">
@@ -439,7 +436,6 @@
             </div>
         </div>
 
-        <!-- Results Page -->
         <div id="resultsPage" class="page hidden">
             <div class="header">
                 <h1>📊 Výsledky</h1>
@@ -447,7 +443,6 @@
 
             <div class="card">
                 <div id="statsContainer" class="stats">
-                    <!-- Stats will be inserted here -->
                 </div>
 
                 <div style="text-align: center; margin-top: 30px;">
@@ -463,14 +458,12 @@
     </div>
 
     <script>
-        // Application state
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let correctAnswers = 0;
         let incorrectAnswers = 0;
         let userAnswers = [];
 
-        // Question data
         const questionData = {
             pronouns: [
                 { type: 'multiple', question: 'Jak se řekne "já" německy?', options: ['ich', 'du', 'er', 'sie'], correct: 0 },
@@ -483,28 +476,28 @@
                 { type: 'multiple', question: 'Jak se řekne "to" (střední rod) německy?', options: ['er', 'sie', 'es', 'das'], correct: 2 },
                 { type: 'multiple', question: 'Které zájmeno použijete pro oslovení více lidí neformálně?', options: ['du', 'ihr', 'Sie', 'wir'], correct: 1 },
                 { type: 'multiple', question: 'Které zájmeno použijete pro zdvořilé oslovení?', options: ['du', 'ihr', 'Sie', 'sie'], correct: 2 },
-                { type: 'input', question: 'Jak říkáte "my jsme" v němčině? (začněte zájmenem)', correct: 'wir sind' },
+                { type: 'input', question: 'Jak říkáte "my jsme" v němčině?', correct: 'wir sind' },
                 { type: 'multiple', question: 'Co je správně: "Du ___ Student"?', options: ['bin', 'bist', 'ist', 'sind'], correct: 1 },
-                { type: 'multiple', question: 'Jaký je rozdíl mezi "sie" (malé s) a "Sie" (velké S)?', options: ['žádný', 'sie = ona/oni, Sie = Vy (zdvořile)', 'sie = my, Sie = oni', 'sie = ty, Sie = vy'], correct: 1 },
-                { type: 'input', question: 'Doplňte zájmeno: "_____ sind Studenten." (my)', correct: 'wir' },
-                { type: 'multiple', question: 'Kterým zájmenem nahradíte "das Mädchen" (dívka)?', options: ['er', 'sie', 'es', 'ihr'], correct: 2 }
+                { type: 'multiple', question: 'Jaký je rozdíl mezi "sie" a "Sie"?', options: ['žádný', 'sie = ona/oni, Sie = Vy', 'sie = my, Sie = oni', 'sie = ty, Sie = vy'], correct: 1 },
+                { type: 'input', question: 'Doplňte: "_____ sind Studenten." (my)', correct: 'wir' },
+                { type: 'multiple', question: 'Kterým zájmenem nahradíte "das Mädchen"?', options: ['er', 'sie', 'es', 'ihr'], correct: 2 }
             ],
             verbSein: [
                 { type: 'multiple', question: 'Jak se časuje "sein" s "ich"?', options: ['bin', 'bist', 'ist', 'sind'], correct: 0 },
                 { type: 'multiple', question: 'Jak se časuje "sein" s "du"?', options: ['bin', 'bist', 'ist', 'sind'], correct: 1 },
-                { type: 'input', question: 'Doplňte: "Wir _____ Studenten." (sein)', correct: 'sind' },
+                { type: 'input', question: 'Doplňte: "Wir _____ Studenten."', correct: 'sind' },
                 { type: 'multiple', question: 'Co znamená "sein"?', options: ['mít', 'dělat', 'být', 'jít'], correct: 2 },
                 { type: 'multiple', question: 'Jak se časuje "sein" s "er/sie/es"?', options: ['bin', 'bist', 'ist', 'sind'], correct: 2 },
-                { type: 'input', question: 'Doplňte: "Du _____ mein Freund." (sein)', correct: 'bist' },
+                { type: 'input', question: 'Doplňte: "Du _____ mein Freund."', correct: 'bist' },
                 { type: 'multiple', question: 'Jak se časuje "sein" s "ihr"?', options: ['bin', 'bist', 'seid', 'sind'], correct: 2 },
-                { type: 'input', question: 'Doplňte: "Sie _____ Lehrerin." (sein - ona)', correct: 'ist' },
+                { type: 'input', question: 'Doplňte: "Sie _____ Lehrerin."', correct: 'ist' },
                 { type: 'multiple', question: 'Které je správně?', options: ['Ich sind müde', 'Ich bin müde', 'Ich bist müde', 'Ich ist müde'], correct: 1 },
                 { type: 'input', question: 'Přeložte: "Oni jsou doma."', correct: 'Sie sind zu Hause.' },
                 { type: 'multiple', question: 'Co je špatně ve větě "Du sind Student"?', options: ['nic', 'špatné zájmeno', 'špatný tvar slovesa', 'špatné slovo'], correct: 2 },
-                { type: 'input', question: 'Doplňte: "Ihr _____ meine Freunde." (sein)', correct: 'seid' },
+                { type: 'input', question: 'Doplňte: "Ihr _____ meine Freunde."', correct: 'seid' },
                 { type: 'multiple', question: 'Jak řeknete "Já jsem učitel"?', options: ['Ich bin Lehrer', 'Ich bist Lehrer', 'Ich sind Lehrer', 'Ich ist Lehrer'], correct: 0 },
-                { type: 'input', question: 'Negativní forma: "Er _____ nicht hier." (sein)', correct: 'ist' },
-                { type: 'multiple', question: 'V otázce "_____ du müde?" co doplníte?', options: ['Bin', 'Bist', 'Ist', 'Sind'], correct: 1 }
+                { type: 'input', question: 'Negativní forma: "Er _____ nicht hier."', correct: 'ist' },
+                { type: 'multiple', question: 'V otázce "_____ du müde?"', options: ['Bin', 'Bist', 'Ist', 'Sind'], correct: 1 }
             ],
             questionWords: [
                 { type: 'multiple', question: 'Co znamená "Wo"?', options: ['jak', 'kde', 'kdo', 'co'], correct: 1 },
@@ -516,8 +509,8 @@
                 { type: 'input', question: 'Přeložte "proč" do němčiny:', correct: 'warum' },
                 { type: 'multiple', question: 'Co znamená "Wohin"?', options: ['odkud', 'kam', 'kde', 'jak'], correct: 1 },
                 { type: 'input', question: 'Jak se zeptáte "Kolik ti je let?"', correct: 'Wie alt bist du?' },
-                { type: 'multiple', question: 'Které slovo použijete pro otázku "Kolik?"', options: ['Wie viel', 'Wie alt', 'Wie lange', 'Wie oft'], correct: 0 },
-                { type: 'input', question: 'Doplňte: "_____ heißt du?" (Jak se jmenuješ?)', correct: 'Wie' },
+                { type: 'multiple', question: 'Které slovo použijete pro "Kolik?"', options: ['Wie viel', 'Wie alt', 'Wie lange', 'Wie oft'], correct: 0 },
+                { type: 'input', question: 'Doplňte: "_____ heißt du?"', correct: 'Wie' },
                 { type: 'multiple', question: 'Co znamená "Welcher"?', options: ['který', 'jaký', 'kde', 'kdy'], correct: 0 },
                 { type: 'input', question: 'Jak se zeptáte "Jak často?"', correct: 'Wie oft?' },
                 { type: 'multiple', question: 'Rozdíl mezi "Wo" a "Wohin"?', options: ['žádný', 'Wo = kde, Wohin = kam', 'Wo = odkud, Wohin = kde', 'Wo = kdy, Wohin = kde'], correct: 1 },
@@ -533,7 +526,7 @@
                 { type: 'drag', question: 'Sestavte otázku: "Kde bydlíš?"', words: ['Wo', 'wohnst', 'du', '?'], correct: ['Wo', 'wohnst', 'du', '?'] },
                 { type: 'input', question: 'Přeložte: "Jak se máš?"', correct: 'Wie geht es dir?' },
                 { type: 'drag', question: 'Sestavte větu: "Dítě se jmenuje Tom."', words: ['Das', 'Kind', 'heißt', 'Tom', '.'], correct: ['Das', 'Kind', 'heißt', 'Tom', '.'] },
-                { type: 'input', question: 'Přeložte: "Odkud pocházíte?" (zdvořile)', correct: 'Woher kommen Sie?' },
+                { type: 'input', question: 'Přeložte: "Odkud pocházíte?"', correct: 'Woher kommen Sie?' },
                 { type: 'drag', question: 'Sestavte větu: "My jdeme domů."', words: ['Wir', 'gehen', 'nach', 'Hause', '.'], correct: ['Wir', 'gehen', 'nach', 'Hause', '.'] },
                 { type: 'input', question: 'Přeložte: "Oni mluví německy."', correct: 'Sie sprechen Deutsch.' },
                 { type: 'drag', question: 'Sestavte otázku: "Co děláš?"', words: ['Was', 'machst', 'du', '?'], correct: ['Was', 'machst', 'du', '?'] },
@@ -558,38 +551,38 @@
                 { type: 'multiple', question: 'Co znamená "zwei"?', options: ['1', '2', '3', '4'], correct: 1 }
             ],
             pronunciation: [
-                { type: 'input', question: 'Fonetický přepis slova "heißen": (použijte českou výslovnost)', correct: 'hajsen' },
+                { type: 'input', question: 'Fonetický přepis slova "heißen":', correct: 'hajsen' },
                 { type: 'input', question: 'Fonetický přepis slova "spielen":', correct: 'špílen' },
-                { type: 'multiple', question: 'Jak se vyslovuje "eu" v němčině?', options: ['oj', 'aj', 'í', 'e'], correct: 0 },
-                { type: 'input', question: 'Fonetický přepis slova "Straße":', correct: 'štrase' },
-                { type: 'input', question: 'Fonetický přepis slova "sprechen":', correct: 'šprechen' },
-                { type: 'multiple', question: 'Jak se vyslovuje "ie" v němčině?', options: ['oj', 'aj', 'í', 'je'], correct: 2 },
-                { type: 'input', question: 'Fonetický přepis slova "Zürich":', correct: 'cýrich' },
-                { type: 'input', question: 'Fonetický přepis slova "hören":', correct: 'heren' },
-                { type: 'multiple', question: 'Jak se vyslovuje "ß" v němčině?', options: ['s', 'z', 'š', 'ž'], correct: 0 },
-                { type: 'input', question: 'Fonetický přepis slova "Zeit":', correct: 'cajt' },
-                { type: 'input', question: 'Fonetický přepis slova "Deutsch":', correct: 'dojč' },
-                { type: 'multiple', question: 'Jak se vyslovuje "ü" v němčině?', options: ['u', 'i', 'y', 'e'], correct: 1 },
-                { type: 'input', question: 'Fonetický přepis slova "Stadt":', correct: 'štat' },
-                { type: 'input', question: 'Fonetický přepis slova "zehn":', correct: 'cén' },
-                { type: 'multiple', question: 'Jak se vyslovuje "ö" v němčině?', options: ['o', 'e', 'a', 'u'], correct: 1 }
+                { type: 'multiple', question: 'Jak se vyslovuje "eu"?', options: ['oj', 'aj', 'í', 'e'], correct: 0 },
+                { type: 'input', question: 'Fonetický přepis "Straße":', correct: 'štrase' },
+                { type: 'input', question: 'Fonetický přepis "sprechen":', correct: 'šprechen' },
+                { type: 'multiple', question: 'Jak se vyslovuje "ie"?', options: ['oj', 'aj', 'í', 'je'], correct: 2 },
+                { type: 'input', question: 'Fonetický přepis "Zürich":', correct: 'cýrich' },
+                { type: 'input', question: 'Fonetický přepis "hören":', correct: 'heren' },
+                { type: 'multiple', question: 'Jak se vyslovuje "ß"?', options: ['s', 'z', 'š', 'ž'], correct: 0 },
+                { type: 'input', question: 'Fonetický přepis "Zeit":', correct: 'cajt' },
+                { type: 'input', question: 'Fonetický přepis "Deutsch":', correct: 'dojč' },
+                { type: 'multiple', question: 'Jak se vyslovuje "ü"?', options: ['u', 'i', 'y', 'e'], correct: 1 },
+                { type: 'input', question: 'Fonetický přepis "Stadt":', correct: 'štat' },
+                { type: 'input', question: 'Fonetický přepis "zehn":', correct: 'cén' },
+                { type: 'multiple', question: 'Jak se vyslovuje "ö"?', options: ['o', 'e', 'a', 'u'], correct: 1 }
             ],
             introduction: [
-                { type: 'input', question: 'Jak se zeptáte "Jak se jmenuješ?" německy?', correct: 'Wie heißt du?' },
-                { type: 'input', question: 'Odpovězte na otázku "Wo wohnst du?" (řekněte, že bydlíte v Brně):', correct: 'Ich wohne in Brünn.' },
+                { type: 'input', question: 'Jak se zeptáte "Jak se jmenuješ?"', correct: 'Wie heißt du?' },
+                { type: 'input', question: 'Odpovězte: "Bydlím v Brně."', correct: 'Ich wohne in Brünn.' },
                 { type: 'multiple', question: 'Jak se zeptáte "Co rád děláš?"', options: ['Was machst du gern?', 'Wie heißt du?', 'Wo wohnst du?', 'Wer bist du?'], correct: 0 },
-                { type: 'input', question: 'Jak se představíte? "Jmenuji se Pavel."', correct: 'Ich heiße Pavel.' },
-                { type: 'input', question: 'Jak řeknete "Pocházím z České republiky."?', correct: 'Ich komme aus Tschechien.' },
+                { type: 'input', question: 'Představte se: "Jmenuji se Pavel."', correct: 'Ich heiße Pavel.' },
+                { type: 'input', question: '"Pocházím z České republiky."', correct: 'Ich komme aus Tschechien.' },
                 { type: 'multiple', question: 'Jak se zeptáte na věk zdvořile?', options: ['Wie alt sind Sie?', 'Wie alt bist du?', 'Wann sind Sie geboren?', 'Wie heißen Sie?'], correct: 0 },
                 { type: 'input', question: 'Odpovězte: "Je mi 25 let."', correct: 'Ich bin 25 Jahre alt.' },
-                { type: 'input', question: 'Jak se zeptáte "Mluvíte anglicky?"', correct: 'Sprechen Sie Englisch?' },
-                { type: 'multiple', question: 'Jak řeknete "Těší mě" při představování?', options: ['Freut mich', 'Hallo', 'Guten Tag', 'Wie geht es'], correct: 0 },
-                { type: 'input', question: 'Jak se zeptáte "Čím se živíte?" zdvořile?', correct: 'Was sind Sie von Beruf?' },
+                { type: 'input', question: '"Mluvíte anglicky?"', correct: 'Sprechen Sie Englisch?' },
+                { type: 'multiple', question: 'Jak řeknete "Těší mě"?', options: ['Freut mich', 'Hallo', 'Guten Tag', 'Wie geht es'], correct: 0 },
+                { type: 'input', question: '"Čím se živíte?"', correct: 'Was sind Sie von Beruf?' },
                 { type: 'input', question: 'Odpovězte: "Jsem student."', correct: 'Ich bin Student.' },
-                { type: 'multiple', question: 'Jak řeknete "Mám rád hudbu."?', options: ['Ich höre gern Musik', 'Ich mag Musik', 'Ich liebe Musik', 'Všechny odpovědi jsou správné'], correct: 3 },
-                { type: 'input', question: 'Jak se zeptáte "Máte děti?"', correct: 'Haben Sie Kinder?' },
-                { type: 'input', question: 'Jak řeknete "Jsem ženatý/vdaná."?', correct: 'Ich bin verheiratet.' },
-                { type: 'multiple', question: 'Jak se rozloučíte neformálně?', options: ['Auf Wiedersehen', 'Tschüss', 'Guten Tag', 'Freut mich'], correct: 1 }
+                { type: 'multiple', question: '"Mám rád hudbu."', options: ['Ich höre gern Musik', 'Ich mag Musik', 'Ich liebe Musik', 'Všechny jsou správné'], correct: 3 },
+                { type: 'input', question: '"Máte děti?"', correct: 'Haben Sie Kinder?' },
+                { type: 'input', question: '"Jsem ženatý/vdaná."', correct: 'Ich bin verheiratet.' },
+                { type: 'multiple', question: 'Neformální rozloučení?', options: ['Auf Wiedersehen', 'Tschüss', 'Guten Tag', 'Freut mich'], correct: 1 }
             ]
         };
 
@@ -645,7 +638,7 @@
         function loadErrorCount() {
             const errors = JSON.parse(localStorage.getItem('germanErrors') || '[]');
             if (errors.length > 0) {
-                practiceErrorsBtn.innerHTML = `🔄 Procvičit chyby (${errors.length})`;
+                practiceErrorsBtn.innerHTML = '🔄 Procvičit chyby (' + errors.length + ')';
             } else {
                 practiceErrorsBtn.innerHTML = '🔄 Procvičit chyby';
             }
@@ -729,29 +722,29 @@
 
                     questions.push({
                         type: 'multiple',
-                        question: `Jak se časuje "${verbName}" s "${pronoun}"?`,
+                        question: 'Jak se časuje "' + verbName + '" s "' + pronoun + '"?',
                         options: allOptions,
                         correct: correctIndex
                     });
 
                     questions.push({
                         type: 'input',
-                        question: `Doplňte: "${pronoun === 'er/sie/es' ? 'Er' : pronoun.charAt(0).toUpperCase() + pronoun.slice(1)} _____ ${getVerbContext(verbName, pronoun)}." (${verbName})`,
+                        question: 'Doplňte: "' + (pronoun === 'er/sie/es' ? 'Er' : pronoun.charAt(0).toUpperCase() + pronoun.slice(1)) + ' _____ ' + getVerbContext(verbName, pronoun) + '." (' + verbName + ')',
                         correct: correctForm
                     });
                 });
 
                 questions.push({
                     type: 'multiple',
-                    question: `Co znamená "${verbName}"?`,
+                    question: 'Co znamená "' + verbName + '"?',
                     options: shuffleArray([verb.meaning, 'být', 'mít', 'dělat']),
                     correct: 0
                 });
 
                 questions.push({
                     type: 'input',
-                    question: `Přeložte: "Já ${verb.meaning}."`,
-                    correct: `Ich ${verb.conjugations.ich}.`
+                    question: 'Přeložte: "Já ' + verb.meaning + '."',
+                    correct: 'Ich ' + verb.conjugations.ich + '.'
                 });
             });
 
@@ -767,7 +760,7 @@
                 arbeiten: { ich: 'hier', du: 'heute', 'er/sie/es': 'im Büro', wir: 'zusammen', ihr: 'hart', 'sie/Sie': 'viel' },
                 kommen: { ich: 'aus Deutschland', du: 'morgen', 'er/sie/es': 'heute', wir: 'später', ihr: 'pünktlich', 'sie/Sie': 'bald' }
             };
-            return contexts[verbName]?.[pronoun] || '';
+            return contexts[verbName] && contexts[verbName][pronoun] ? contexts[verbName][pronoun] : '';
         }
 
         function startPractice() {
@@ -946,7 +939,7 @@
                 } else if (question.type === 'drag') {
                     correctText = question.correct.join(' ');
                 }
-                showFeedback(`Špatně! ❌<br>Správná odpověď: <strong>${correctText}</strong>`, false);
+                showFeedback('Špatně! ❌<br>Správná odpověď: <strong>' + correctText + '</strong>', false);
             }
 
             submitBtn.classList.add('hidden');
@@ -955,7 +948,7 @@
 
         function showFeedback(message, isCorrect) {
             const feedbackEl = document.createElement('div');
-            feedbackEl.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedbackEl.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
             feedbackEl.innerHTML = message;
             questionContainer.appendChild(feedbackEl);
         }
@@ -986,24 +979,7 @@
             const percentage = Math.round((correctAnswers / totalQuestions) * 100);
 
             const statsContainer = document.getElementById('statsContainer');
-            statsContainer.innerHTML = `
-                <div class="stat">
-                    <div class="stat-value">${totalQuestions}</div>
-                    <div class="stat-label">Celkem otázek</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">${correctAnswers}</div>
-                    <div class="stat-label">Správně</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">${incorrectAnswers}</div>
-                    <div class="stat-label">Špatně</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">${percentage}%</div>
-                    <div class="stat-label">Úspěšnost</div>
-                </div>
-            `;
+            statsContainer.innerHTML = '<div class="stat"><div class="stat-value">' + totalQuestions + '</div><div class="stat-label">Celkem otázek</div></div><div class="stat"><div class="stat-value">' + correctAnswers + '</div><div class="stat-label">Správně</div></div><div class="stat"><div class="stat-value">' + incorrectAnswers + '</div><div class="stat-label">Špatně</div></div><div class="stat"><div class="stat-value">' + percentage + '%</div><div class="stat-label">Úspěšnost</div></div>';
 
             loadErrorCount();
         }
@@ -1082,4 +1058,4 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-</html>
+</html>',
